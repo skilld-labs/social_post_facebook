@@ -36,7 +36,7 @@ class FacebookPost extends SocialPostNetwork implements FacebookPostInterface {
   /**
    * Facebook connection.
    *
-   * @var FacebookOAuth
+   * @var Facebook SDK
    */
   protected $connection;
 
@@ -93,7 +93,7 @@ class FacebookPost extends SocialPostNetwork implements FacebookPostInterface {
    * {@inheritdoc}
    */
   protected function initSdk() {
-    $class_name = '\Abraham\FacebookOAuth\FacebookOAuth';
+    $class_name = '\Facebook\Facebook';
     if (!class_exists($class_name)) {
       throw new SocialApiException(sprintf('The PHP SDK for Facebook could not be found. Class: %s.', $class_name));
     }
@@ -101,7 +101,12 @@ class FacebookPost extends SocialPostNetwork implements FacebookPostInterface {
     /* @var \Drupal\social_post_facebook\Settings\FacebookPostSettings $settings */
     $settings = $this->settings;
 
-    return new FacebookOAuth($settings->getConsumerKey(), $settings->getConsumerSecret());
+    return new \Facebook\Facebook([
+      'app_id' => $settings->getAppId(),
+      'app_secret' => $settings->getAppSecret(),
+      'default_graph_version' => 'v2.2',
+    ]);
+
   }
 
   /**
@@ -136,12 +141,15 @@ class FacebookPost extends SocialPostNetwork implements FacebookPostInterface {
   /**
    * {@inheritdoc}
    */
-  public function getSdk2($oauth_token, $oauth_token_secret) {
+  public function getSdk2() {
     /* @var \Drupal\social_post_facebook\Settings\FacebookPostSettings $settings */
     $settings = $this->settings;
 
-    return new FacebookOAuth($settings->getConsumerKey(), $settings->getConsumerSecret(),
-                $oauth_token, $oauth_token_secret);
+    return new \Facebook\Facebook([
+      'app_id' => $settings->getAppId(),
+      'app_secret' => $settings->getAppSecret(),
+      'default_graph_version' => 'v2.2',
+    ]);
   }
 
 }

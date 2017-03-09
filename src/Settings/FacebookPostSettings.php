@@ -10,39 +10,39 @@ use Drupal\social_api\Settings\SettingsBase;
 class FacebookPostSettings extends SettingsBase implements FacebookPostSettingsInterface {
 
   /**
-   * Consumer key.
+   * APP ID.
    *
    * @var string
    */
-  protected $consumerKey;
+  protected $appId;
 
   /**
-   * Consumer secret.
+   * APP Secret.
    *
    * @var string
    */
-  protected $consumerSecret;
+  protected $appSecret;
 
   /**
    * {@inheritdoc}
    */
-  public function getConsumerKey() {
-    if (!$this->consumerKey) {
-      $this->consumerKey = $this->config->get('consumer_key');
+  public function getAppId() {
+    if (!$this->appId) {
+      $this->appId = $this->config->get('app_id');
     }
 
-    return $this->consumerKey;
+    return $this->appId;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getConsumerSecret() {
-    if (!$this->consumerSecret) {
-      $this->consumerSecret = $this->config->get('consumer_secret');
+  public function getAppSecret() {
+    if (!$this->appSecret) {
+      $this->appSecret = $this->config->get('app_secret');
     }
 
-    return $this->consumerSecret;
+    return $this->appSecret;
   }
 
 }

@@ -8,6 +8,7 @@ use Drupal\social_post_facebook\FacebookPostAuthManager;
 use Drupal\social_post_facebook\FacebookUserEntityManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zend\Diactoros\Response\RedirectResponse;
+use Drupal\Core\Url;
 
 /**
  * Manages requests to Facebook.
@@ -74,17 +75,14 @@ class FacebookPostController extends ControllerBase {
     /* @var \Drupal\social_post_facebook\Plugin\Network\FacebookPost $network_plugin */
     $network_plugin = $this->networkManager->createInstance('social_post_facebook');
 
-    /* @var \Abraham\FacebookOAuth\FacebookOAuth $connection */
+    /* @var \Facebook\Facebook $connection */
     $connection = $network_plugin->getSdk();
-
-    $request_token = $connection->oauth('oauth/request_token', array('oauth_callback' => $network_plugin->getOauthCallback()));
-
-    // Saves the request token values in session.
-    $this->authManager->setOauthToken($request_token['oauth_token']);
-    $this->authManager->setOauthTokenSecret($request_token['oauth_token_secret']);
-
-    // Generates url for authentication.
-    $url = $connection->url('oauth/authorize', array('oauth_token' => $request_token['oauth_token']));
+    $helper = $connection->getRedirectLoginHelper();
+    $loginUrl = Url::fromRoute('social_post_facebook.callback');
+    $loginUrl->setAbsolute(TRUE);
+    // Optional permissions.
+    $permissions = ['publish_actions'];
+    $url = $helper->getLoginUrl($loginUrl->toString(), $permissions);
 
     return new RedirectResponse($url);
   }
@@ -95,17 +93,28 @@ class FacebookPostController extends ControllerBase {
    * @throws \Abraham\FacebookOAuth\FacebookOAuthException
    */
   public function callback() {
-    $oauth_token = $this->authManager->getOauthToken();
-    $oauth_token_secret = $this->authManager->getOauthTokenSecret();
 
     /* @var \Abraham\FacebookOAuth\FacebookOAuth $connection */
-    $connection = $this->networkManager->createInstance('social_post_facebook')->getSdk2($oauth_token, $oauth_token_secret);
+    $connection = $this->networkManager->createInstance('social_post_facebook')->getSdk2();
+    $helper = $connection->getRedirectLoginHelper();
 
     // Gets the permanent access token.
-    $access_token = $connection->oauth('oauth/access_token', array('oauth_verifier' => $this->authManager->getOauthVerifier()));
+    $access_token = $helper->getAccessToken();
+    $oAuth2Client = $connection->getOAuth2Client();
+    $tokenMetadata = $oAuth2Client->debugToken($access_token);
+
+    if (!$access_token->isLongLived()) {
+      $access_token = $oAuth2Client->getLongLivedAccessToken($access_token);
+    }
+
+    $data = [
+      'user_id' => $tokenMetadata->getUserId(),
+      'token' => (string) $access_token->getValue(),
+      'screen_name' => $tokenMetadata->getUserId(),
+    ];
 
     // Save the user authorization tokens and store the current user id in $uid.
-    $uid = $this->facebookEntity->saveUser($access_token);
+    $uid = $this->facebookEntity->saveUser($data);
 
     return $this->redirect('entity.user.edit_form', array('user' => $uid));
   }

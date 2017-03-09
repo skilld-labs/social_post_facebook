@@ -8,19 +8,19 @@ namespace Drupal\social_post_facebook\Settings;
 interface FacebookPostSettingsInterface {
 
   /**
-   * Gets the consumer key.
+   * Gets the app id.
    *
    * @return string
    *   The consumer key.
    */
-  public function getConsumerKey();
+  public function getAppId();
 
   /**
-   * Gets the consumer secret.
+   * Gets the app secret.
    *
    * @return string
    *   The consumer secret.
    */
-  public function getConsumerSecret();
+  public function getAppSecret();
 
 }

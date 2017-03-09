@@ -36,14 +36,9 @@ interface FacebookPostInterface extends SocialPostNetworkInterface {
    * oauth_token_secret. It is used for getting permanent tokens from
    * Facebook and authenticating users that has already granted permission.
    *
-   * @param string $oauth_token
-   *   The oauth token.
-   * @param string $oauth_token_secret
-   *   The oauth token secret.
-   *
    * @return \Abraham\FacebookOAuth\FacebookOAuth
    *   The instance of the connection to Facebook.
    */
-  public function getSdk2($oauth_token, $oauth_token_secret);
+  public function getSdk2();
 
 }

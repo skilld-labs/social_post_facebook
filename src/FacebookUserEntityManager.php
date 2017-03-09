@@ -62,9 +62,8 @@ class FacebookUserEntityManager {
     if (!count($user) > 0) {
       $facebook_user = array(
         'facebook_id' => $access_token['user_id'],
-        'screen_name' => $access_token['screen_name'],
-        'token' => $access_token['oauth_token'],
-        'token_secret' => $access_token['oauth_token_secret'],
+        'screen_name' => $access_token['user_id'],
+        'token' => $access_token['token'],
         'uid' => (int) $this->currentUser->id(),
       );
 
