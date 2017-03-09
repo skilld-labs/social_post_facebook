@@ -10,5 +10,7 @@
     "issues": "https://www.drupal.org/project/issues/social_post_facebook",
     "source": "http://cgit.drupalcode.org/social_post_facebook"
   },
-  "require": { }
+  "require": {
+    "facebook/graph-sdk" : "~5.0"
+  }
 }
