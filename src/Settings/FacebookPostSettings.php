@@ -1,13 +1,13 @@
 <?php
 
-namespace Drupal\social_post_twitter\Settings;
+namespace Drupal\social_post_facebook\Settings;
 
 use Drupal\social_api\Settings\SettingsBase;
 
 /**
  * Returns the app information.
  */
-class TwitterPostSettings extends SettingsBase implements TwitterPostSettingsInterface {
+class FacebookPostSettings extends SettingsBase implements FacebookPostSettingsInterface {
 
   /**
    * Consumer key.

@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\social_post_twitter\Entity\Controller;
+namespace Drupal\social_post_facebook\Entity\Controller;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityListBuilder;
@@ -10,11 +10,11 @@ use Drupal\Core\Routing\UrlGeneratorInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Defines a class to build a listing of Twitter user entities.
+ * Defines a class to build a listing of Facebook user entities.
  *
- * @ingroup social_post_twitter
+ * @ingroup social_post_facebook
  */
-class TwitterUserListBuilder extends EntityListBuilder {
+class FacebookUserListBuilder extends EntityListBuilder {
 
   /**
    * The url generator.
@@ -43,12 +43,12 @@ class TwitterUserListBuilder extends EntityListBuilder {
   }
 
   /**
-   * TwitterUserListBuilder constructor.
+   * FacebookUserListBuilder constructor.
    *
    * @param \Drupal\Core\Entity\EntityTypeInterface $entity_type
    *   The entity type.
    * @param \Drupal\Core\Entity\EntityStorageInterface $storage
-   *   The entity storage for the social_post_twitter_user entity.
+   *   The entity storage for the social_post_facebook_user entity.
    * @param \Drupal\Core\Entity\EntityStorageInterface $user_entity
    *   The entity storage for the user entity.
    * @param \Drupal\Core\Routing\UrlGeneratorInterface $url_generator
@@ -68,7 +68,7 @@ class TwitterUserListBuilder extends EntityListBuilder {
    * {@inheritdoc}
    */
   public function buildHeader() {
-    $header['twitter_id'] = $this->t('Twitter ID');
+    $header['facebook_id'] = $this->t('Facebook ID');
     $header['screen_name'] = $this->t('Screen name');
     $header['user'] = $this->t('User ID');
     return $header + parent::buildHeader();
@@ -78,8 +78,8 @@ class TwitterUserListBuilder extends EntityListBuilder {
    * {@inheritdoc}
    */
   public function buildRow(EntityInterface $entity) {
-    /* @var $entity \Drupal\social_post_twitter\Entity\TwitterUser */
-    $row['twitter_id'] = $entity->getTwitterId();
+    /* @var $entity \Drupal\social_post_facebook\Entity\FacebookUser */
+    $row['facebook_id'] = $entity->getFacebookId();
     $row['screen_name'] = $entity->getScreenName();
 
     $user = $this->userEntity->load($entity->getUserId());

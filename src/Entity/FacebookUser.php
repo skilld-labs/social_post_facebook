@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\social_post_twitter\Entity;
+namespace Drupal\social_post_facebook\Entity;
 
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
@@ -10,36 +10,36 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\user\UserInterface;
 
 /**
- * Defines the Twitter user entity entity.
+ * Defines the Facebook user entity entity.
  *
- * @ingroup social_post_twitter
+ * @ingroup social_post_facebook
  *
  * @ContentEntityType(
- *   id = "social_post_twitter_user",
- *   label = @Translation("Social Post Twitter User"),
+ *   id = "social_post_facebook_user",
+ *   label = @Translation("Social Post Facebook User"),
  *   handlers = {
  *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
- *     "list_builder" = "Drupal\social_post_twitter\Entity\Controller\TwitterUserListBuilder",
+ *     "list_builder" = "Drupal\social_post_facebook\Entity\Controller\FacebookUserListBuilder",
  *
  *     "form" = {
- *       "delete" = "Drupal\social_post_twitter\Form\TwitterUserEntityDeleteForm"
+ *       "delete" = "Drupal\social_post_facebook\Form\FacebookUserEntityDeleteForm"
  *     },
- *     "access" = "Drupal\social_post_twitter\TwitterUserAccessControlHandler",
+ *     "access" = "Drupal\social_post_facebook\FacebookUserAccessControlHandler",
  *   },
  *   list_cache_contexts = { "user" },
- *   base_table = "twitter_user",
- *   admin_permission = "administer social post twitter user entity",
+ *   base_table = "facebook_user",
+ *   admin_permission = "administer social post facebook user entity",
  *   entity_keys = {
  *     "id" = "id",
  *     "uuid" = "uuid"
  *   },
  *   links = {
- *     "delete-form" = "/admin/config/social-api/social-post/twitter/users/{social_post_twitter_user}/delete",
- *     "collection" = "/admin/config/social-api/social-post/twitter/users"
+ *     "delete-form" = "/admin/config/social-api/social-post/facebook/users/{social_post_facebook_user}/delete",
+ *     "collection" = "/admin/config/social-api/social-post/facebook/users"
  *   }
  * )
  */
-class TwitterUser extends ContentEntityBase implements TwitterUserInterface {
+class FacebookUser extends ContentEntityBase implements FacebookUserInterface {
 
   use EntityChangedTrait;
 
@@ -131,8 +131,8 @@ class TwitterUser extends ContentEntityBase implements TwitterUserInterface {
   /**
    * {@inheritdoc}
    */
-  public function getTwitterId() {
-    return $this->get('twitter_id')->value;
+  public function getFacebookId() {
+    return $this->get('facebook_id')->value;
   }
 
   /**
@@ -171,24 +171,24 @@ class TwitterUser extends ContentEntityBase implements TwitterUserInterface {
 
     $fields['id'] = BaseFieldDefinition::create('integer')
       ->setLabel(t('ID'))
-      ->setDescription(t('The ID of the Twitter User entity.'))
+      ->setDescription(t('The ID of the Facebook User entity.'))
       ->setReadOnly(TRUE);
 
     $fields['uuid'] = BaseFieldDefinition::create('uuid')
       ->setLabel(t('UUID'))
-      ->setDescription(t('The UUID Twitter User entity.'))
+      ->setDescription(t('The UUID Facebook User entity.'))
       ->setReadOnly(TRUE);
 
-    // The twitter user id.
-    $fields['twitter_id'] = BaseFieldDefinition::create('string')
+    // The facebook user id.
+    $fields['facebook_id'] = BaseFieldDefinition::create('string')
       ->setSetting('max_length', '20')
-      ->setLabel(t('Twitter ID'))
-      ->setDescription(t('The Twitter user id'));
+      ->setLabel(t('Facebook ID'))
+      ->setDescription(t('The Facebook user id'));
 
-    // The screen name of the user on Twitter.
+    // The screen name of the user on Facebook.
     $fields['screen_name'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Screen Name'))
-      ->setDescription(t('The Twitter screen name'));
+      ->setDescription(t('The Facebook screen name'));
 
     // The user id field.
     $fields['uid'] = BaseFieldDefinition::create('entity_reference')
@@ -213,12 +213,12 @@ class TwitterUser extends ContentEntityBase implements TwitterUserInterface {
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
-    // Twitter oauth token.
+    // Facebook oauth token.
     $fields['token'] = BaseFieldDefinition::create('string')
       ->setLabel(t('OAuth Token'))
       ->setDescription(t('The OAuth Token assigned for this user.'));
 
-    // Twitter oauth token secret.
+    // Facebook oauth token secret.
     $fields['token_secret'] = BaseFieldDefinition::create('string')
       ->setLabel(t('OAuth Token Secret'))
       ->setDescription(t('The OAuth Token Secret assigned for this user.'));

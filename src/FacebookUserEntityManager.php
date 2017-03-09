@@ -1,15 +1,15 @@
 <?php
 
-namespace Drupal\social_post_twitter;
+namespace Drupal\social_post_facebook;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 
 /**
- * Manages storage of Twitter User entities.
+ * Manages storage of Facebook User entities.
  */
-class TwitterUserEntityManager {
+class FacebookUserEntityManager {
 
   use StringTranslationTrait;
 
@@ -28,7 +28,7 @@ class TwitterUserEntityManager {
   protected $currentUser;
 
   /**
-   * TwitterUserEntityManager constructor.
+   * FacebookUserEntityManager constructor.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_manager
    *   The entity type manager.
@@ -41,39 +41,39 @@ class TwitterUserEntityManager {
   }
 
   /**
-   * Saves the user in the database as a Twitter user.
+   * Saves the user in the database as a Facebook user.
    *
    * @param array $access_token
-   *   Array with long live tokens returned by Twitter.
+   *   Array with long live tokens returned by Facebook.
    *
    * @return int
    *   The current drupal user id.
    */
   public function saveUser(array &$access_token) {
 
-    $entity = $this->entityManager->getStorage('social_post_twitter_user');
+    $entity = $this->entityManager->getStorage('social_post_facebook_user');
 
     // Checks if the user has already granted permissions.
     $user = $entity->loadByProperties([
-      'twitter_id' => $access_token['user_id'],
+      'facebook_id' => $access_token['user_id'],
       'uid' => (int) $this->currentUser->id(),
     ]);
 
     if (!count($user) > 0) {
-      $twitter_user = array(
-        'twitter_id' => $access_token['user_id'],
+      $facebook_user = array(
+        'facebook_id' => $access_token['user_id'],
         'screen_name' => $access_token['screen_name'],
         'token' => $access_token['oauth_token'],
         'token_secret' => $access_token['oauth_token_secret'],
         'uid' => (int) $this->currentUser->id(),
       );
 
-      $entity->create($twitter_user)->save();
+      $entity->create($facebook_user)->save();
 
-      drupal_set_message($this->t('Twitter account was successfully registered'));
+      drupal_set_message($this->t('Facebook account was successfully registered'));
     }
     else {
-      drupal_set_message($this->t('This user has already granted permission for the twitter account'), 'warning');
+      drupal_set_message($this->t('This user has already granted permission for the facebook account'), 'warning');
     }
 
     return $this->currentUser->id();

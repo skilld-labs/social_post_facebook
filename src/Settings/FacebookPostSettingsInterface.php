@@ -1,11 +1,11 @@
 <?php
 
-namespace Drupal\social_post_twitter\Settings;
+namespace Drupal\social_post_facebook\Settings;
 
 /**
- * Defines an interface for Social Post Twitter settings.
+ * Defines an interface for Social Post Facebook settings.
  */
-interface TwitterPostSettingsInterface {
+interface FacebookPostSettingsInterface {
 
   /**
    * Gets the consumer key.
