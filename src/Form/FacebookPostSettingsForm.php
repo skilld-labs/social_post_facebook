@@ -36,19 +36,19 @@ class FacebookPostSettingsForm extends ConfigFormBase {
       '#open' => TRUE,
     );
 
-    $form['facebook_settings']['consumer_key'] = array(
+    $form['facebook_settings']['app_id'] = array(
       '#type' => 'textfield',
       '#required' => TRUE,
-      '#title' => $this->t('Consumer Key (API Key)'),
-      '#default_value' => $config->get('consumer_key'),
+      '#title' => $this->t('APP ID'),
+      '#default_value' => $config->get('app_id'),
       '#description' => $this->t('Copy the Consumer Key here'),
     );
 
-    $form['facebook_settings']['consumer_secret'] = array(
+    $form['facebook_settings']['app_secret'] = array(
       '#type' => 'textfield',
       '#required' => TRUE,
-      '#title' => $this->t('Consumer Secret (API Secret)'),
-      '#default_value' => $config->get('consumer_secret'),
+      '#title' => $this->t('APP secret'),
+      '#default_value' => $config->get('app_secret'),
       '#description' => $this->t('Copy the Consumer Secret here'),
     );
 
@@ -62,8 +62,8 @@ class FacebookPostSettingsForm extends ConfigFormBase {
     $values = $form_state->getValues();
 
     $this->config('social_post_facebook.settings')
-      ->set('consumer_key', $values['consumer_key'])
-      ->set('consumer_secret', $values['consumer_secret'])
+      ->set('app_id', $values['app_id'])
+      ->set('app_secret', $values['app_secret'])
       ->save();
 
     parent::submitForm($form, $form_state);
