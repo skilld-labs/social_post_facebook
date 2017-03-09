@@ -22,12 +22,10 @@ interface FacebookPostInterface extends SocialPostNetworkInterface {
    *
    * @param string $access_token
    *   The access token.
-   * @param string $access_token_secret
-   *   The access token secret.
    * @param string $status
    *   The tweet text.
    */
-  public function doPost($access_token, $access_token_secret, $status);
+  public function doPost($access_token, $status);
 
   /**
    * Gets a FacebookOAuth instance with oauth_token and oauth_token_secret.

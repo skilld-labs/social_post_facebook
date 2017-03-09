@@ -41,11 +41,17 @@ class FacebookPost extends SocialPostNetwork implements FacebookPostInterface {
   protected $connection;
 
   /**
-   * The tweet text.
+   * The status text.
    *
    * @var string
    */
   protected $status;
+
+  /**
+   * User Access token.
+   * @var User access Token.
+   */
+  protected $accessToken;
 
   /**
    * {@inheritdoc}
@@ -117,7 +123,11 @@ class FacebookPost extends SocialPostNetwork implements FacebookPostInterface {
       throw new SocialApiException('Call post() method from its wrapper doPost()');
     }
 
-    $this->connection->post('statuses/update', ['status' => $this->status]);
+    $message = $this->connection->post('me/feed', ['message' => $this->status], $this->accessToken);
+
+    if (!isset($message->httpStatusCode) || $message->httpStatusCode != 200) {
+      return FALSE;
+    }
 
     return TRUE;
   }
@@ -125,9 +135,10 @@ class FacebookPost extends SocialPostNetwork implements FacebookPostInterface {
   /**
    * {@inheritdoc}
    */
-  public function doPost($access_token, $access_token_secret, $status) {
-    $this->connection = $this->getSdk2($access_token, $access_token_secret);
+  public function doPost($access_token, $status) {
+    $this->connection = $this->getSdk2();
     $this->status = $status;
+    $this->accessToken = $access_token;
     return $this->post();
   }
 
